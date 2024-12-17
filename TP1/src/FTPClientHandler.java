@@ -28,6 +28,26 @@ import java.util.Scanner;
             // Envoi du message de bienvenue
             out.write("220 Service Ready \r\n".getBytes());
 
+            // Demande du nom d'utilisateur
+            String login = scanner.nextLine();
+            System.out.println(login);
+
+            // Connexion avec miage et car
+            if (login.substring("USER ".length()).equals("miage")) {
+                out.write("331 User name ok \r\n".getBytes());
+                String mdp = scanner.nextLine();
+                System.out.println(mdp);
+                if (mdp.substring("PASS ".length()).equals("car")) {
+                    out.write("230 User logged in \r\n".getBytes());
+                }
+                
+            } else {
+                // Si l'utilisateur n'existe pas
+                out.write("530 User name ko \r\n".getBytes());
+                out.write("255 Exit \r\n".getBytes());
+                clientSocket.close();
+            }
+
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
@@ -38,6 +58,6 @@ import java.util.Scanner;
             }
         }
     }
- }
+}
 
  
