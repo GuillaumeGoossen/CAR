@@ -1,10 +1,10 @@
 package TP1.src;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.Socket;
+import java.util.Scanner;
 
 /*
  * Classe qui gère les interactions spécifiques avec chaque client, y compris l'authentification et le traitement des commandes
@@ -13,8 +13,6 @@ import java.net.Socket;
  public class FTPClientHandler implements Runnable{
     
     private Socket clientSocket;
-    private BufferedReader in;
-    private PrintWriter out;
 
     public FTPClientHandler(Socket socket) {
         this.clientSocket = socket;
@@ -23,12 +21,13 @@ import java.net.Socket;
     public void run(){
         try {
             // Initialisation des flux de communication
-            in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-            out = new PrintWriter(clientSocket.getOutputStream(), true);
+            OutputStream out = clientSocket.getOutputStream();
+            InputStream in = clientSocket.getInputStream();
+            Scanner scanner = new Scanner(in);
 
             // Envoi du message de bienvenue
-            out.println("220 Service ready");
-            
+            out.write("220 Service Ready \r\n".getBytes());
+
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
