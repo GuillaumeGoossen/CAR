@@ -48,6 +48,10 @@ import java.util.Scanner;
                         if ("QUIT".equalsIgnoreCase(command)) {
                             out.write("221 Connexion FTP fermée \r\n".getBytes());
                             break;
+                        } else if (command.equalsIgnoreCase("SYST")) {
+                            out.write("215 UNIX Type: L8 \r\n".getBytes());
+                        } else if (command.equalsIgnoreCase("FEAT")) {
+                            out.write("211 Features:\r\n".getBytes());
                         } else {
                             out.write("502 Command not implemented \r\n".getBytes());
                         }
