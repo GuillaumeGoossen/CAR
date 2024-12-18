@@ -37,14 +37,30 @@ import java.util.Scanner;
                 out.write("331 User name ok \r\n".getBytes());
                 String mdp = scanner.nextLine();
                 System.out.println(mdp);
+                
                 if (mdp.substring("PASS ".length()).equals("car")) {
                     out.write("230 User logged in \r\n".getBytes());
+
+                    while (true) {
+
+                        String command = scanner.nextLine();
+                        System.out.println(command);
+                        if ("QUIT".equalsIgnoreCase(command)) {
+                            out.write("221 Connexion FTP fermée \r\n".getBytes());
+                            break;
+                        } else {
+                            out.write("502 Command not implemented \r\n".getBytes());
+                        }
+                    }
+                }else {
+                    // Si le mot de passe est incorrect
+                    out.write("530 Invalid password \r\n".getBytes());
+                    clientSocket.close();
                 }
                 
             } else {
                 // Si l'utilisateur n'existe pas
-                out.write("530 User name ko \r\n".getBytes());
-                out.write("255 Exit \r\n".getBytes());
+                out.write("530 Invalid username \r\n".getBytes());
                 clientSocket.close();
             }
 
