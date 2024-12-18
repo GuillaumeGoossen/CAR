@@ -19,11 +19,12 @@ import java.util.Scanner;
     }
 
     public void run(){
+        Scanner scanner = null;
         try {
             // Initialisation des flux de communication
             OutputStream out = clientSocket.getOutputStream();
             InputStream in = clientSocket.getInputStream();
-            Scanner scanner = new Scanner(in);
+            scanner = new Scanner(in);
 
             // Envoi du message de bienvenue
             out.write("220 Service Ready \r\n".getBytes());
@@ -47,6 +48,7 @@ import java.util.Scanner;
                         System.out.println(command);
                         if ("QUIT".equalsIgnoreCase(command)) {
                             out.write("221 Connexion FTP fermée \r\n".getBytes());
+                            clientSocket.close();
                             break;
                         } else if (command.equalsIgnoreCase("SYST")) {
                             out.write("215 UNIX Type: L8 \r\n".getBytes());
@@ -71,6 +73,9 @@ import java.util.Scanner;
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
+            if (scanner != null) {
+                scanner.close();
+            }
             try {
                 clientSocket.close();
             } catch (IOException e) {

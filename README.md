@@ -15,4 +15,15 @@ Elle initialise un serveur en écoutant sur un port spécifique (dans ce cas, le
 
 #### Classe FTPClientHandler
 
-La classe `FTPClientHandler` a pour rôle de gérer les interactions avec chaque client connecté. 
+La classe gère les interactions avec un client FTP. Elle authentifie l'utilisateur en vérifiant le nom d'utilisateur et le mot de passe, puis traite les commandes FTP telles que `QUIT`, `SYST` et `FEAT`. Si la commande `QUIT` est reçue, elle ferme la connexion.
+
+#### Codes de réponse FTP utilisés
+
+- `220` : Service prêt
+- `331` : Nom d'utilisateur correct
+- `230` : Utilisateur connecté
+- `221` : Connexion fermée
+- `215` : Type de système
+- `211` : Fonctionnalités
+- `502` : Commande non implémentée
+- `530` : Nom d'utilisateur ou mot de passe incorrect
