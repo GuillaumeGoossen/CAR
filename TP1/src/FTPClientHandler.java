@@ -1,9 +1,13 @@
 package TP1.src;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Scanner;
 
 /*
@@ -13,6 +17,13 @@ import java.util.Scanner;
  public class FTPClientHandler implements Runnable{
     
     private Socket clientSocket;
+    private static final Map<String, String> users = new HashMap<>();
+
+    static {
+        // Initialisation des logins et mots de passe autorisés
+        users.put("miage", "car");
+        users.put("admin", "admin");
+    }
 
     public FTPClientHandler(Socket socket) {
         this.clientSocket = socket;
@@ -33,13 +44,16 @@ import java.util.Scanner;
             String login = scanner.nextLine();
             System.out.println(login);
 
+            // Extraction du nom d'utilisateur
+            String username = login.substring("USER ".length());
+
             // Connexion avec miage et car
-            if (login.substring("USER ".length()).equals("miage")) {
+            if (users.containsKey(username)) {
                 out.write("331 User name ok \r\n".getBytes());
                 String mdp = scanner.nextLine();
                 System.out.println(mdp);
                 
-                if (mdp.substring("PASS ".length()).equals("car")) {
+                if (users.get(username).equals(mdp.substring("PASS ".length()))) {
                     out.write("230 User logged in \r\n".getBytes());
 
                     while (true) {
