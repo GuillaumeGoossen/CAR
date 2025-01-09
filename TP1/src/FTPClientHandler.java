@@ -1,4 +1,5 @@
 package TP1.src;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -101,7 +102,23 @@ public class FTPClientHandler implements Runnable {
                             } else {
                                 out.write("550 File not found \r\n".getBytes());
                             }
-                        } else {
+                        } else if (command.startsWith("LIST")) {
+                            out.write("150 Here comes the directory listing.\r\n".getBytes());
+                            if (dataSocket != null) {
+                                dataConnection = dataSocket.accept();
+                            }
+                            File directory = new File(".");
+                            File[] files = directory.listFiles();
+                            OutputStream dataOut = dataConnection.getOutputStream();
+                            for (File file : files) {
+                                dataOut.write((file.getName() + "\r\n").getBytes());
+                            }
+                            dataOut.close();
+                            dataConnection.close();
+                            out.write("226 Directory send OK.\r\n".getBytes());
+                        }
+
+                        else {
                             out.write("502 Command not implemented \r\n".getBytes());
                         }
                     }
