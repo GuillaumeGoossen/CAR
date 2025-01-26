@@ -23,6 +23,7 @@ public class FTPClientHandler implements Runnable {
     private ServerSocket dataSocket;
     private Socket dataConnection;
     private String transferType = "A"; // Default to ASCII mode
+    private File currentDirectory = new File(".");
 
     static {
         // Initialisation des logins et mots de passe autorisés
@@ -32,6 +33,11 @@ public class FTPClientHandler implements Runnable {
 
     public FTPClientHandler(Socket socket) {
         this.clientSocket = socket;
+        try {
+            this.currentDirectory = new File(".").getCanonicalFile();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void run() {
@@ -79,7 +85,7 @@ public class FTPClientHandler implements Runnable {
                             out.write(("229 Entering Extended Passive Mode (|||" + dataPort + "|)\r\n").getBytes());
                         } else if (command.startsWith("RETR ")) {
                             String fileName = command.substring("RETR ".length());
-                            File file = new File(fileName);
+                            File file = new File(currentDirectory, fileName);
 
                             if (file.exists() && !file.isDirectory()) {
                                 out.write(("150 Opening data connection for " + fileName + "\r\n").getBytes());
@@ -107,7 +113,7 @@ public class FTPClientHandler implements Runnable {
                             if (dataSocket != null) {
                                 dataConnection = dataSocket.accept();
                             }
-                            File directory = new File(".");
+                            File directory = currentDirectory;
                             File[] files = directory.listFiles();
                             OutputStream dataOut = dataConnection.getOutputStream();
                             for (File file : files) {
@@ -116,6 +122,30 @@ public class FTPClientHandler implements Runnable {
                             dataOut.close();
                             dataConnection.close();
                             out.write("226 Directory send OK.\r\n".getBytes());
+                        }
+
+                        else if (command.startsWith("CWD ")) {
+                            String dirName = command.substring("CWD ".length()).trim();
+                            File newDir;
+
+                            if (dirName.equals("..")) {
+                                newDir = currentDirectory.getParentFile();
+                            } else if (dirName.equals(".")) {
+                                newDir = currentDirectory;
+                            } else {
+                                newDir = new File(currentDirectory, dirName);
+                            }
+
+                            try {
+                                if (newDir != null && newDir.exists() && newDir.isDirectory()) {
+                                    currentDirectory = newDir.getCanonicalFile();
+                                    out.write(("250 Directory successfully changed to " + currentDirectory.getCanonicalPath() + "\r\n").getBytes());
+                                } else {
+                                    out.write("550 Failed to change directory. Directory not found or not a directory.\r\n".getBytes());
+                                }
+                            } catch (IOException e) {
+                                out.write("550 Failed to change directory due to an error.\r\n".getBytes());
+                            }
                         }
 
                         else {
