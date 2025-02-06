@@ -1,0 +1,28 @@
+{
+    // Utilisez IntelliSense pour en savoir plus sur les attributs possibles.
+    // Pointez pour afficher la description des attributs existants.
+    // Pour plus d'informations, visitez : https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Current File",
+            "request": "launch",
+            "mainClass": "${file}"
+        },
+        {
+            "type": "java",
+            "name": "FTPServer",
+            "request": "launch",
+            "mainClass": "TP1.src.FTPServer",
+            "projectName": "CAR_d7e5e6bb"
+        },
+        {
+            "type": "java",
+            "name": "Tp2Application",
+            "request": "launch",
+            "mainClass": "TP2.src.main.java.com.goossen.TP2.Tp2Application",
+            "projectName": "CAR_d7e5e6bb"
+        }
+    ]
+}

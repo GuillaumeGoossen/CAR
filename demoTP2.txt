@@ -1,0 +1,45 @@
+Gestion des commandes d'un magasin
+- Clients (email (=identifiant), mot de passe, nom, prénom) : pour être client faut avoir créée un compte
+| Relation Clients - Commandes : Un client est associé à 0,n commandes
+- Commandes
+| Relation Commandes - Articles : Une commande est associée à 0,n articles
+- Articles (libellé, quantité, prix unitaire)
+
+Lien de l'application : /store/home
+
+/store/home : la page d'arrivée avec :
+- la partie login  email password submit 
+- la partie signin email password nom prénom submit
+il faudrait gérer le cas où le compte existe déjà
+
+store/user :
+- Bonjour x
+- Bouton logout
+- "COmmandes" : liste en dessous
+- "Ajout d'une commande"
+- formulaire : tire de la commande : champs remplissable 
+- submit
+uand on ajoute un titre puis submit ca apparait dans la listes au dessus
+
+/store/commande/"titre de la commande" :
+bonjour x
+lien pour voir toutes les commande
+"titre de la comand""
+"articles"
+liste des articles
+"ajout d'un article"
+libellé
+quantité
+prix unitaire
+submit
+on peut supprier des articles qu'on a ajouté
+il y a un bouton imprimer sous la commande qui apparait quand on ajoute des articles
+
+quand on clique sur imprimer : store/commande/imprimer/"nom commande"
+titre de la commande 
+client : …
+tableau avec la commande
+avec une ligne total commande et le prix
+faudrait peut etre mettre un lien de redirection vers la commande
+
+
