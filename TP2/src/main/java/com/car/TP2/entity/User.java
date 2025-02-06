@@ -2,11 +2,15 @@ package com.car.TP2.entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
+import java.util.List;
 
 /*
  * This class represents a user
  */
 @Entity
+@Table(name = "customer")
 public class User {
     
     @Id
@@ -14,6 +18,9 @@ public class User {
     private String password;
     private String name;
     private String surname;
+
+    @OneToMany(mappedBy = "customer")
+    private List<Order> orders;
 
     public User() {
     }

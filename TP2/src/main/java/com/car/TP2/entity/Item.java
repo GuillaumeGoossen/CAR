@@ -3,12 +3,15 @@ package com.car.TP2.entity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 
 /*
  * This class represents an item
  */
 
 @Entity
+@Table(name = "item")
 public class Item {
     
     @Id
@@ -17,6 +20,9 @@ public class Item {
     private String wording;
     private String quantity;
     private String price;
+
+    @ManyToOne
+    private Order order;
 
     public Item() {
     }

@@ -3,18 +3,31 @@ package com.car.TP2.entity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
+import java.util.List;
 
 /*
  * This class represents an order
  */
 
 @Entity
+@Table(name = "order")
 public class Order {
     
     @Id
     @GeneratedValue
     private Long id;
     private String title;
+
+    @ManyToOne
+    @JoinColumn(name = "customer_email")
+    private User customer;
+
+    @OneToMany(mappedBy = "order")
+    private List<Item> items;
 
     public Order() {
     }
