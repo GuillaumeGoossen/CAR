@@ -52,4 +52,12 @@ public class Order {
     public void setTitle(String title) {
         this.title = title;
     }
+
+    public void setCustomer(User customer) {
+        this.customer = customer;
+    }
+
+    public void setItems(List<Item> items) {
+        this.items = items;
+    }
 }
