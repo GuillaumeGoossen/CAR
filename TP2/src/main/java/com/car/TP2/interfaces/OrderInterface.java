@@ -7,5 +7,5 @@ import com.car.TP2.entity.Order;
 public interface OrderInterface {
     public List<Order> getOrdersByCustomerEmail(String email);
 
-    public void createOrder(Order order);
+    public void createOrder(String order, String userId);
 }
