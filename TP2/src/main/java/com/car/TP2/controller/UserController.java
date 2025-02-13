@@ -1,12 +1,13 @@
 package com.car.TP2.controller;
 
 import com.car.TP2.entity.User;
-import com.car.TP2.service.UserService;
+import com.car.TP2.interfaces.UserInterface;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import jakarta.servlet.http.HttpSession;
 import java.util.Map;
 
 @Controller
@@ -14,13 +15,14 @@ import java.util.Map;
 public class UserController {
 
     @Autowired
-    private UserService userService;
+    private UserInterface userService;
 
     @PostMapping("/login")
-    public ModelAndView login(@RequestParam String email, @RequestParam String password) {
+    public ModelAndView login(@RequestParam String email, @RequestParam String password, HttpSession session) {
         User user = userService.login(email, password);
         if (user != null) {
-            return new ModelAndView("redirect:/store/user?email=" + email);
+            session.setAttribute("user", user);
+            return new ModelAndView("redirect:/store/user");
         } else {
             ModelAndView mav = new ModelAndView("store/home");
             mav.addObject("error", "Invalid email or password");
@@ -29,26 +31,28 @@ public class UserController {
     }
 
     @PostMapping("/signin")
-    public ModelAndView signin(@RequestParam String email, @RequestParam String password, @RequestParam String name, @RequestParam String surname) {
+    public ModelAndView signin(@RequestParam String email, @RequestParam String password, @RequestParam String name, @RequestParam String surname, HttpSession session) {
         if (userService.existsByEmail(email)) {
             ModelAndView mav = new ModelAndView("store/home");
             mav.addObject("error", "Account already exists");
             return mav;
         } else {
-            User user = new User(email, password, name, surname);
-            userService.save(user);
-            return new ModelAndView("redirect:/store/home");
+            userService.createUser(email, password, name, surname);
+            User user = userService.findByEmail(email);
+            session.setAttribute("user", user);
+            return new ModelAndView("redirect:/store/user");
         }
     }
 
     @GetMapping("/logout")
-    public ModelAndView logout() {
+    public ModelAndView logout(HttpSession session) {
+        session.invalidate();
         return new ModelAndView("redirect:/store/home");
     }
 
     @GetMapping
-    public ModelAndView home(@RequestParam String email) {
-        User user = userService.findByEmail(email);
+    public ModelAndView home(HttpSession session) {
+        User user = (User) session.getAttribute("user");
         if (user == null) {
             return new ModelAndView("redirect:/store/home");
         }
