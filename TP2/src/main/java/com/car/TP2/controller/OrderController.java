@@ -1,7 +1,7 @@
 package com.car.TP2.controller;
 
 import com.car.TP2.entity.Order;
-import com.car.TP2.service.OrderService;
+import com.car.TP2.interfaces.OrderInterface;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -16,7 +16,7 @@ import java.util.Map;
 public class OrderController {
 
     @Autowired
-    private OrderService orderService;
+    private OrderInterface orderService;
 
     @PostMapping("/create")
     public ModelAndView createOrder(@RequestParam String title, HttpSession session) {

@@ -25,9 +25,8 @@ public class UserController {
 
     @PostMapping("/login")
     public ModelAndView login(@RequestParam String email, @RequestParam String password, HttpSession session) {
-        User user = userService.login(email, password);
-        if (user != null) {
-            session.setAttribute("userId", user.getEmail());
+        userService.handleLogin(email, password, session);
+        if (session.getAttribute("userId") != null) {
             return new ModelAndView("redirect:/store/user");
         } else {
             ModelAndView mav = new ModelAndView("store/home");
@@ -38,21 +37,18 @@ public class UserController {
 
     @PostMapping("/signin")
     public ModelAndView signin(@RequestParam String email, @RequestParam String password, @RequestParam String name, @RequestParam String surname, HttpSession session) {
-        if (userService.existsByEmail(email)) {
+        if (!userService.handleSignin(email, password, name, surname, session)) {
             ModelAndView mav = new ModelAndView("store/home");
             mav.addObject("error", "Account already exists");
             return mav;
         } else {
-            userService.createUser(email, password, name, surname);
-            User user = userService.findByEmail(email);
-            session.setAttribute("userId", user.getEmail());
-            return new ModelAndView("redirect:/store/home");
+            return new ModelAndView("redirect:/store/user");
         }
     }
 
     @GetMapping("/logout")
     public ModelAndView logout(HttpSession session) {
-        session.invalidate();
+        userService.handleLogout(session);
         return new ModelAndView("redirect:/store/home");
     }
 
