@@ -21,7 +21,7 @@ public class UserController {
     public ModelAndView login(@RequestParam String email, @RequestParam String password, HttpSession session) {
         User user = userService.login(email, password);
         if (user != null) {
-            session.setAttribute("user", user);
+            session.setAttribute("userId", user.getEmail());
             return new ModelAndView("redirect:/store/user");
         } else {
             ModelAndView mav = new ModelAndView("store/home");
@@ -39,8 +39,8 @@ public class UserController {
         } else {
             userService.createUser(email, password, name, surname);
             User user = userService.findByEmail(email);
-            session.setAttribute("user", user);
-            return new ModelAndView("redirect:/store/user");
+            session.setAttribute("userId", user.getEmail());
+            return new ModelAndView("redirect:/store/home");
         }
     }
 
@@ -52,10 +52,11 @@ public class UserController {
 
     @GetMapping
     public ModelAndView home(HttpSession session) {
-        User user = (User) session.getAttribute("user");
-        if (user == null) {
+        String userId = (String) session.getAttribute("userId");
+        if (userId == null) {
             return new ModelAndView("redirect:/store/home");
         }
+        User user = userService.findByEmail(userId);
         var model = Map.of("user", user);
         return new ModelAndView("store/user", model);
     }
