@@ -32,6 +32,6 @@ public class UserService implements UserInterface {
     }
 
     public User findByEmail(String email) {
-        return userRepository.findById(email).orElse(null);
+        return userRepository.findByEmail(email);
     }
 }
