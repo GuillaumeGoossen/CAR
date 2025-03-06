@@ -39,6 +39,16 @@ public class OrderController {
         return new ModelAndView("store/user", model);
     }
 
+    @PostMapping("/delete")
+    public ModelAndView deleteOrder(@RequestParam Long orderId, HttpSession session) {
+        String userId = getUserIdFromSession(session);
+        if (userId == null) {
+            return new ModelAndView("redirect:/store/home");
+        }
+        orderService.deleteOrder(orderId);
+        return new ModelAndView("redirect:/store/user");
+    }
+
     private String getUserIdFromSession(HttpSession session) {
         return (String) session.getAttribute("userId");
     }

@@ -37,4 +37,9 @@ public class OrderService implements OrderInterface {
     public List<Order> getOrdersByCustomerEmail(String email) {
         return orderRepository.findByCustomerEmail(email);
     }
+
+    @Override
+    public void deleteOrder(Long orderId) {
+        orderRepository.deleteById(orderId);
+    }
 }

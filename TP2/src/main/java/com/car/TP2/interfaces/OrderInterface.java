@@ -8,4 +8,6 @@ public interface OrderInterface {
     public List<Order> getOrdersByCustomerEmail(String email);
 
     public void createOrder(String order, String userId);
+
+    void deleteOrder(Long orderId);
 }

@@ -15,6 +15,10 @@
     <ul>
         <li th:each="order : ${orders}">
             <span th:text="${order.title}"></span>
+            <form action="/store/order/delete" method="post" style="display:inline;">
+                <input type="hidden" name="orderId" th:value="${order.id}" />
+                <button type="submit">Supprimer</button>
+            </form>
         </li>
     </ul>
     <form action="/store/user/logout" method="get">
