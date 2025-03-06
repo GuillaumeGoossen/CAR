@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Détails de la Commande</title>
+</head>
+<body>
+    <h1>Bonjour <span th:text="${user.name}"></span></h1>
+    <h2>Détails de la Commande</h2>
+    <p>Titre: <span th:text="${order.title}"></span></p>
+    <p>Client: <span th:text="${user.email}"></span></p>
+    <a href="/store/user">Voir toutes les commandes</a>
+</body>
+</html>

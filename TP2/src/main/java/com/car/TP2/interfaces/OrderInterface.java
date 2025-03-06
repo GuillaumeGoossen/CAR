@@ -10,4 +10,6 @@ public interface OrderInterface {
     public void createOrder(String order, String userId);
 
     void deleteOrder(Long orderId);
+
+    Order findByTitleAndCustomerEmail(String title, String email);
 }

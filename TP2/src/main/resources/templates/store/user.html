@@ -14,7 +14,7 @@
     <h2>Liste des Commandes</h2>
     <ul>
         <li th:each="order : ${orders}">
-            <span th:text="${order.title}"></span>
+            <a th:href="@{/store/order/{title}(title=${order.title})}" th:text="${order.title}"></a>
             <form action="/store/order/delete" method="post" style="display:inline;">
                 <input type="hidden" name="orderId" th:value="${order.id}" />
                 <button type="submit">Supprimer</button>

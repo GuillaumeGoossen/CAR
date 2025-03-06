@@ -49,6 +49,20 @@ public class OrderController {
         return new ModelAndView("redirect:/store/user");
     }
 
+    @GetMapping("/{title}")
+    public ModelAndView viewOrder(@PathVariable String title, HttpSession session) {
+        String userId = getUserIdFromSession(session);
+        if (userId == null) {
+            return new ModelAndView("redirect:/store/home");
+        }
+        Order order = orderService.findByTitleAndCustomerEmail(title, userId);
+        if (order == null) {
+            return new ModelAndView("redirect:/store/user");
+        }
+        var model = Map.of("order", order, "user", order.getCustomer());
+        return new ModelAndView("store/orderDetails", model);
+    }
+
     private String getUserIdFromSession(HttpSession session) {
         return (String) session.getAttribute("userId");
     }

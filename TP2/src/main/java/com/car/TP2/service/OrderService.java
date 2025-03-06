@@ -42,4 +42,9 @@ public class OrderService implements OrderInterface {
     public void deleteOrder(Long orderId) {
         orderRepository.deleteById(orderId);
     }
+
+    @Override
+public Order findByTitleAndCustomerEmail(String title, String email) {
+    return orderRepository.findByTitleAndCustomerEmail(title, email);
+}
 }

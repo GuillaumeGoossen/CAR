@@ -9,4 +9,6 @@ import java.util.List;
  */
 public interface OrderRepository extends JpaRepository<Order, Long> {
     List<Order> findByCustomerEmail(String email);
+
+    Order findByTitleAndCustomerEmail(String title, String email);
 }
