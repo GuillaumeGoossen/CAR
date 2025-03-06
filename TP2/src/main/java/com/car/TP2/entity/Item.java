@@ -18,8 +18,8 @@ public class Item {
     @GeneratedValue
     private Long id;
     private String wording;
-    private String quantity;
-    private String price;
+    private Integer quantity;
+    private Double price;
 
     @ManyToOne
     private Order order;
@@ -27,7 +27,7 @@ public class Item {
     public Item() {
     }
 
-    public Item(Long id, String wording, String quantity, String price) {
+    public Item(Long id, String wording, Integer quantity, Double price) {
         this.id = id;
         this.wording = wording;
         this.quantity = quantity;
@@ -42,11 +42,11 @@ public class Item {
         return wording;
     }
 
-    public String getQuantity() {
+    public Integer getQuantity() {
         return quantity;
     }
 
-    public String getPrice() {
+    public Double getPrice() {
         return price;
     }
 
@@ -58,11 +58,19 @@ public class Item {
         this.wording = wording;
     }
 
-    public void setQuantity(String quantity) {
+    public void setQuantity(Integer quantity) {
         this.quantity = quantity;
     }
 
-    public void setPrice(String price) {
+    public void setPrice(Double price) {
         this.price = price;
+    }
+
+    public void setOrder(Order order) {
+        this.order = order;
+    }
+
+    public Order getOrder() {
+        return order;
     }
 }

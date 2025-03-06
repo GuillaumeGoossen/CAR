@@ -64,4 +64,8 @@ public class Order {
     public User getCustomer() {
         return customer;
     }
+
+    public List<Item> getItems() {
+        return items;
+    }
 }

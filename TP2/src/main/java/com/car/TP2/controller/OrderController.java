@@ -63,6 +63,26 @@ public class OrderController {
         return new ModelAndView("store/orderDetails", model);
     }
 
+    @PostMapping("/item/add")
+public ModelAndView addItem(@RequestParam Long orderId, @RequestParam String wording, @RequestParam int quantity, @RequestParam double price, HttpSession session) {
+    String userId = getUserIdFromSession(session);
+    if (userId == null) {
+        return new ModelAndView("redirect:/store/home");
+    }
+    orderService.addItemToOrder(orderId, wording, quantity, price);
+    return new ModelAndView("redirect:/store/order/" + orderService.findById(orderId).getTitle());
+}
+
+@PostMapping("/item/delete")
+public ModelAndView deleteItem(@RequestParam Long itemId, HttpSession session) {
+    String userId = getUserIdFromSession(session);
+    if (userId == null) {
+        return new ModelAndView("redirect:/store/home");
+    }
+    Long orderId = orderService.deleteItemFromOrder(itemId);
+    return new ModelAndView("redirect:/store/order/" + orderService.findById(orderId).getTitle());
+}
+
     private String getUserIdFromSession(HttpSession session) {
         return (String) session.getAttribute("userId");
     }
