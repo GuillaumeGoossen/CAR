@@ -83,6 +83,21 @@ public ModelAndView deleteItem(@RequestParam Long itemId, HttpSession session) {
     return new ModelAndView("redirect:/store/order/" + orderService.findById(orderId).getTitle());
 }
 
+@GetMapping("/imprimer/{title}")
+public ModelAndView printOrder(@PathVariable String title, HttpSession session) {
+    String userId = getUserIdFromSession(session);
+    if (userId == null) {
+        return new ModelAndView("redirect:/store/home");
+    }
+    Order order = orderService.findByTitleAndCustomerEmail(title, userId);
+    if (order == null) {
+        return new ModelAndView("redirect:/store/user");
+    }
+    double total = order.getItems().stream().mapToDouble(item -> item.getQuantity() * item.getPrice()).sum();
+    var model = Map.of("order", order, "user", order.getCustomer(), "total", total);
+    return new ModelAndView("store/printOrder", model);
+}
+
     private String getUserIdFromSession(HttpSession session) {
         return (String) session.getAttribute("userId");
     }

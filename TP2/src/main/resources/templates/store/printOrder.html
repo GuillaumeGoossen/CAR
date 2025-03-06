@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Imprimer la Commande</title>
+</head>
+<body>
+    <h1>Détails de la Commande</h1>
+    <p>Titre: <span th:text="${order.title}"></span></p>
+    <p>Client: <span th:text="${user.email}"></span></p>
+    <h3>Liste des articles</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>Libellé</th>
+                <th>Quantité</th>
+                <th>Prix unitaire</th>
+                <th>Total</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="item : ${order.items}">
+                <td th:text="${item.wording}"></td>
+                <td th:text="${item.quantity}"></td>
+                <td th:text="${item.price}"></td>
+                <td th:text="${item.quantity * item.price}"></td>
+            </tr>
+        </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="3">Total Commande</td>
+                <td th:text="${total}"></td>
+            </tr>
+        </tfoot>
+    </table>
+    <div th:if="${order.items.size() > 0}">
+        <button onclick="window.print()">Imprimer</button>
+    </div>
+    <a th:href="@{/store/order/{title}(title=${order.title})}">Retour à la commande</a>
+</body>
+</html>
