@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>MapReduce Word Count</title>
+</head>
+<body>
+    <h1>MapReduce Word Count</h1>
+
+    <form action="/akka/upload" method="post" enctype="multipart/form-data">
+        <label for="file">Uploader un fichier texte :</label>
+        <input type="file" id="file" name="file" accept=".txt"><br><br>
+        <button type="submit">Envoyer le fichier</button>
+    </form>
+    <hr>
+
+    <form action="/akka/count" method="get">
+        <label for="word">Rechercher un mot-clé :</label>
+        <input type="text" id="word" name="word" placeholder="Entrez un mot à rechercher">
+        <button type="submit">Rechercher</button>
+    </form>
+    <hr>
+
+    <div th:if="${word != null}">
+        <h2>Résultat du Comptage</h2>
+        <p>Le mot "<span th:text="${word}"></span>" apparaît <span th:text="${count}"></span> fois.</p>
+    </div>
+    <hr>
+
+    <form action="/akka/shutdown" method="post">
+        <button type="submit">Arrêter le système</button>
+    </form>
+</body>
+</html>
