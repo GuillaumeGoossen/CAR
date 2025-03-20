@@ -4,9 +4,7 @@ import akka.actor.UntypedActor;
 import akka.actor.Props;
 import akka.actor.ActorRef;
 import com.example.TP3.messages.Line;
-import com.example.TP3.messages.WordCount;
-import java.util.HashMap;
-import java.util.Map;
+import com.example.TP3.messages.Word;
 
 public class Mapper extends UntypedActor {
     private final ActorRef[] reducers;
@@ -32,9 +30,7 @@ public class Mapper extends UntypedActor {
         String[] words = line.split("\\s+");
         for (String word : words) {
             ActorRef reducer = partition(reducers, word);
-            Map<String, Integer> wordCount = new HashMap<>();
-            wordCount.put(word, 1);
-            reducer.tell(new WordCount(wordCount), getSelf());
+            reducer.tell(new Word(word), getSelf());
         }
     }
 
