@@ -6,6 +6,11 @@
 <body>
     <h1>MapReduce Word Count</h1>
 
+    <!-- Section pour afficher les messages -->
+    <div th:if="${message != null}" style="color: green; font-weight: bold;">
+        <p th:text="${message}"></p>
+    </div>
+
     <form action="/akka/upload" method="post" enctype="multipart/form-data">
         <label for="file">Uploader un fichier texte :</label>
         <input type="file" id="file" name="file" accept=".txt"><br><br>

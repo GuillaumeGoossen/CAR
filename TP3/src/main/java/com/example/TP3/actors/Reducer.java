@@ -20,8 +20,12 @@ public class Reducer extends UntypedActor {
         if (message instanceof Word) {
             String word = ((Word) message).word();
             wordCounts.put(word, wordCounts.getOrDefault(word, 0) + 1);
+            System.out.println("Reducer received word: " + word);
         } else if (message instanceof String) {
-            getSender().tell(new WordCount(wordCounts), getSelf());
+            String word = (String) message;
+            int count = wordCounts.getOrDefault(word, 0);
+            System.out.println("Reducer received request for word: " + word + ", count: " + count);
+            getSender().tell(count, getSelf());
         } else {
             unhandled(message);
         }
