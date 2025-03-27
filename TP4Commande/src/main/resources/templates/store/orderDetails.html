@@ -34,5 +34,11 @@
     <div th:if="${order.items.size() > 0}">
         <a th:href="@{/store/order/imprimer/{title}(title=${order.title})}">Imprimer</a>
     </div>
+    <div>
+        <form action="/store/order/submit" method="post">
+            <input type="hidden" name="orderId" th:value="${order.id}" />
+            <button type="submit">Passer commande</button>
+        </form>
+    </div>
 </body>
 </html>

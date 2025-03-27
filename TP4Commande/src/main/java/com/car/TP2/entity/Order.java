@@ -68,4 +68,14 @@ public class Order {
     public List<Item> getItems() {
         return items;
     }
+
+    private String status = "PENDING"; 
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
 }

@@ -6,6 +6,7 @@ import com.car.TP2.repository.UserRepository;
 import com.car.TP2.repository.ItemRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import com.car.TP2.interfaces.OrderInterface;
@@ -27,6 +28,11 @@ public class OrderService implements OrderInterface {
     @Autowired
     private ItemRepository itemRepository;
 
+    @Autowired
+    private KafkaTemplate<String, String> kafkaTemplate;
+
+    private static final String TOPIC = "stock-update";
+
     @Override
     public void createOrder(String title, String userId) {
         User user = userRepository.findByEmail(userId);
@@ -40,7 +46,7 @@ public class OrderService implements OrderInterface {
 
     @Override
     public List<Order> getOrdersByCustomerEmail(String email) {
-        return orderRepository.findByCustomerEmail(email);
+        return orderRepository.findByCustomerEmailAndStatus(email, "PENDING");
     }
 
     @Override
@@ -82,5 +88,15 @@ public class OrderService implements OrderInterface {
     @Override
     public Order findById(Long orderId) {
         return orderRepository.findById(orderId).orElse(null);
+    }
+
+    public void submitOrder(Long orderId) {
+        Order order = orderRepository.findById(orderId).orElse(null);
+        if (order != null) {
+            kafkaTemplate.send("stock-update", "Commande " + order.getTitle() + " soumise pour mise à jour des stocks.");
+    
+            order.setStatus("VALIDATED");
+            orderRepository.save(order);
+        }
     }
 }

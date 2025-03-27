@@ -21,6 +21,9 @@
             </form>
         </li>
     </ul>
+    <div th:if="${message}" class="alert alert-success">
+        <p th:text="${message}"></p>
+    </div>
     <form action="/store/user/logout" method="get">
         <button type="submit">Logout</button>
     </form>

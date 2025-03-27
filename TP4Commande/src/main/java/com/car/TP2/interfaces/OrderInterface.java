@@ -11,4 +11,5 @@ public interface OrderInterface {
     void addItemToOrder(Long orderId, String wording, int quantity, double price);
     Long deleteItemFromOrder(Long itemId);
     Order findById(Long orderId);
+    void submitOrder(Long orderId);    
 }
