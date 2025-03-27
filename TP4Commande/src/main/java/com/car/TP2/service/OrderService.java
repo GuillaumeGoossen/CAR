@@ -6,16 +6,12 @@ import com.car.TP2.repository.UserRepository;
 import com.car.TP2.repository.ItemRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import com.car.TP2.interfaces.OrderInterface;
 import com.car.TP2.entity.User;
 import com.car.TP2.entity.Item;
 
-/*
- * This class represents an order service
- */
 @Service
 public class OrderService implements OrderInterface {
 
@@ -29,7 +25,7 @@ public class OrderService implements OrderInterface {
     private ItemRepository itemRepository;
 
     @Autowired
-    private KafkaTemplate<String, String> kafkaTemplate;
+    private KafkaProducer kafkaProducer;
 
     private static final String TOPIC = "stock-update";
 
@@ -93,8 +89,7 @@ public class OrderService implements OrderInterface {
     public void submitOrder(Long orderId) {
         Order order = orderRepository.findById(orderId).orElse(null);
         if (order != null) {
-            kafkaTemplate.send("stock-update", "Commande " + order.getTitle() + " soumise pour mise à jour des stocks.");
-    
+            kafkaProducer.produce(TOPIC, "Commande " + order.getTitle() + " soumise pour mise à jour des stocks.");
             order.setStatus("VALIDATED");
             orderRepository.save(order);
         }
