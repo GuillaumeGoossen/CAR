@@ -9,6 +9,8 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 /*
  * This class represents an order
  */
@@ -27,6 +29,7 @@ public class Order {
     private User customer;
 
     @OneToMany(mappedBy = "order")
+    @JsonManagedReference
     private List<Item> items;
 
     public Order() {

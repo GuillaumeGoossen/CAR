@@ -12,6 +12,8 @@ import com.car.TP2.interfaces.OrderInterface;
 import com.car.TP2.entity.User;
 import com.car.TP2.entity.Item;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 @Service
 public class OrderService implements OrderInterface {
 
@@ -86,12 +88,21 @@ public class OrderService implements OrderInterface {
         return orderRepository.findById(orderId).orElse(null);
     }
 
+
     public void submitOrder(Long orderId) {
         Order order = orderRepository.findById(orderId).orElse(null);
         if (order != null) {
-            kafkaProducer.produce(TOPIC, "Commande " + order.getTitle() + " soumise pour mise à jour des stocks.");
-            order.setStatus("VALIDATED");
-            orderRepository.save(order);
+            try {
+                ObjectMapper objectMapper = new ObjectMapper();
+                String message = objectMapper.writeValueAsString(order);
+                
+                kafkaProducer.produce(TOPIC, message);
+
+                order.setStatus("VALIDATED");
+                orderRepository.save(order);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 }
