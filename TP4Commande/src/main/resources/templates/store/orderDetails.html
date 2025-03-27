@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Détails de la Commande</title>
+</head>
+<body>
+    <h1>Bonjour <span th:text="${user.name}"></span></h1>
+    <a href="/store/user">Voir toutes les commandes</a>
+    <h2>Détails de la Commande</h2>
+    <p>Titre: <span th:text="${order.title}"></span></p>
+    <h3>Liste des articles</h3>
+    <ul>
+        <li th:each="item : ${order.items}">
+            <span th:text="${item.wording}"></span> - 
+            <span th:text="${item.quantity}"></span> - 
+            <span th:text="${item.price}"></span>
+            <form action="/store/order/item/delete" method="post" style="display:inline;">
+                <input type="hidden" name="itemId" th:value="${item.id}" />
+                <button type="submit">Supprimer</button>
+            </form>
+        </li>
+    </ul>
+    <h3>Ajouter un article</h3>
+    <form action="/store/order/item/add" method="post">
+        <input type="hidden" name="orderId" th:value="${order.id}" />
+        <label for="item-wording">Libellé:</label>
+        <input type="text" id="item-wording" name="wording" required>
+        <label for="item-quantity">Quantité:</label>
+        <input type="number" id="item-quantity" name="quantity" required>
+        <label for="item-price">Prix unitaire:</label>
+        <input type="number" step="0.01" id="item-price" name="price" required>
+        <button type="submit">Ajouter</button>
+    </form>
+    <div th:if="${order.items.size() > 0}">
+        <a th:href="@{/store/order/imprimer/{title}(title=${order.title})}">Imprimer</a>
+    </div>
+</body>
+</html>

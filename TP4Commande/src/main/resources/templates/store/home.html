@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Acceuil</title>
+</head>
+<body>
+    <h1>Bienvenue</h1>
+    <div>
+        <h2>Login</h2>
+        <form action="/store/user/login" method="post">
+            <label for="login-email">Email:</label>
+            <input type="email" id="login-email" name="email" required>
+            <label for="login-password">Mot de passe:</label>
+            <input type="password" id="login-password" name="password" required>
+            <button type="submit">Connexion</button>
+        </form>
+    </div>
+    <div>
+        <h2>Sign In</h2>
+        <form action="/store/user/signin" method="post">
+            <label for="signin-email">Email:</label>
+            <input type="email" id="signin-email" name="email" required>
+            <label for="signin-password">Mot de passe:</label>
+            <input type="password" id="signin-password" name="password" required>
+            <label for="signin-name">Nom:</label>
+            <input type="text" id="signin-name" name="name" required>
+            <label for="signin-surname">Prénom:</label>
+            <input type="text" id="signin-surname" name="surname" required>
+            <button type="submit">Inscription</button>
+        </form>
+    </div>
+    <div th:if="${error}">
+        <p th:text="${error}"></p>
+    </div>
+</body>
+</html>
